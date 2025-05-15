@@ -34,6 +34,12 @@ public class OrdenCompraController {
         return ordenCompraService.obtenerConLaboratorio(id);
     }
 
+    @GetMapping("/laboratorio/{codLab}")
+    public List<OrdenCompra> listarPorLaboratorio(@PathVariable long codLab) {
+        return ordenCompraService.listarPorLaboratorio(codLab);
+    }
+
+
     @PostMapping
     public void crear(@RequestBody OrdenCompra ordenCompra) {
         ordenCompraService.crear(ordenCompra);

@@ -8,6 +8,7 @@ import tecsup.edu.pe.daw_ec02.model.Laboratorio;
 import tecsup.edu.pe.daw_ec02.model.OrdenCompra;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrdenCompraServiceImpl implements OrdenCompraService {
@@ -31,13 +32,21 @@ public class OrdenCompraServiceImpl implements OrdenCompraService {
     }
 
     @Override
-    public void crear(OrdenCompra ordenCompra) {
-        ordenCompraDAO.guardar(ordenCompra);
+    public void crear(OrdenCompra orden) {
+        Laboratorio lab = laboratorioDAO.buscarPorId(orden.getCodLab());
+        if (lab == null) {
+            throw new IllegalArgumentException("No existe laboratorio con codLab = " + orden.getCodLab());
+        }
+        ordenCompraDAO.guardar(orden);
     }
 
     @Override
-    public void actualizar(OrdenCompra ordenCompra) {
-        ordenCompraDAO.actualizar(ordenCompra);
+    public void actualizar(OrdenCompra orden) {
+        Laboratorio lab = laboratorioDAO.buscarPorId(orden.getCodLab());
+        if (lab == null) {
+            throw new IllegalArgumentException("No existe laboratorio con codLab = " + orden.getCodLab());
+        }
+        ordenCompraDAO.actualizar(orden);
     }
 
     @Override
@@ -62,4 +71,12 @@ public class OrdenCompraServiceImpl implements OrdenCompraService {
 
         return dto;
     }
+
+    @Override
+    public List<OrdenCompra> listarPorLaboratorio(long codLab) {
+        return ordenCompraDAO.listar().stream()
+                .filter(o -> o.getCodLab() == codLab)
+                .collect(Collectors.toList());
+    }
+
 }

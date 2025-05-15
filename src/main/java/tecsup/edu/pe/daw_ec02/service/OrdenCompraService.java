@@ -13,4 +13,6 @@ public interface OrdenCompraService {
     void eliminar(Long nroOrdenC);
 
     OrdenCompraDTO obtenerConLaboratorio(long nroOrdenC);
+    List<OrdenCompra> listarPorLaboratorio(long codLab);
+
 }
